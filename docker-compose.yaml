@@ -10,8 +10,8 @@ services:
     container_name: prometheus
     volumes:
       - prometheus_data:/prometheus
-      - /Users/tadatakaito/Documents/opstest/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - /Users/tadatakaito/Documents/opstest/prometheus/rules.yaml:/etc/prometheus/rules.yaml
+      - /(User-folder)/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /(User-folder)/rules.yaml:/etc/prometheus/rules.yaml
     ports:
       - 9090:9090
     restart: always
@@ -21,7 +21,7 @@ services:
     ports:
       - 3000:3000
     env_file:
-      - /Users/tadatakaito/Documents/opstest/grafana/grafana.env
+      - /(User-folder)/grafana/grafana.env
   node-exporter:
     image: quay.io/prometheus/node-exporter
     container_name: node-exporter
