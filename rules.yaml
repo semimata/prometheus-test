@@ -1,0 +1,18 @@
+groups:
+ - name: test-rules
+   rules:
+   - record: job:process_cpu_seconds:rate5m
+     expr: sum without(instance)(rate(process_cpu_seconds_total[5m]))
+   - alert: NodeInstanceDown
+     expr: up == 0
+     for: 5m
+     labels:
+       severity: critical
+   - alert: DiskChkLimit
+     expr: > 
+       process_open_fds > process_max_fds * 0.20
+     for: 5m
+     labels:
+       severity: page
+     annotations: 
+       summary: ' Test annotation!'  
