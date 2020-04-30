@@ -1,0 +1,68 @@
+version: '3'
+
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - prometheus_data:/prometheus
+      - /Users/tadatakaito/Documents/opstest/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /Users/tadatakaito/Documents/opstest/prometheus/rules.yaml:/etc/prometheus/rules.yaml
+    ports:
+      - 9090:9090
+    restart: always
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    env_file:
+      - /Users/tadatakaito/Documents/opstest/grafana/grafana.env
+  node-exporter:
+    image: quay.io/prometheus/node-exporter
+    container_name: node-exporter
+    ports:
+      - 9100:9100
+  nodejssample:
+    restart: always
+    build: ./nodejs
+    container_name: nodejssample
+    ports:
+      - 3100:3000
+  blackbox-exporter: 
+    restart: always
+    build: ./blackbox-exporter
+#    image: prom/blackbox-exporter
+    container_name: blackbox-exporter
+    ports: 
+      - 9115:9115
+  alertmanager: 
+    restart: always
+    build: ./alertmanager
+#   image: prom/alertmanager
+    container_name: alertmanager
+    ports: 
+      - 9093:9093
+  python3:
+    restart: always
+    build: ./python3
+    container_name: python3
+    ports:
+      - 8001:8001
+      - 8000:8000
+    working_dir: /root/
+    tty: true
+  consul:
+    restart: always
+    build: ./consul
+    container_name: consul
+    ports:
+      - 8300:8300
+      - 8301:8301
+      - 8302:8302
+      - 8500:8500
+      - 8600:8600
